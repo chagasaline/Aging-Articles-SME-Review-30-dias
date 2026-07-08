@@ -10,7 +10,7 @@ SMTP autenticado, sem precisar abrir o Outlook.
 - Mesmo texto PT + tabela + EN
 - Mesma tabela HTML (DocId / Type / Article Title / Article Owner Name), com as
   mesmas cores
-- Mesmo Cc fixo: ` emails das pessoas separados por vírgulas`
+- Mesmo Cc fixo: ` emails das pessoas separados por ponto e vírgulas; `
 - Remetente: ` email do remetente`
 
 **Melhoria em relação à macro:** o agrupamento por dono não depende mais das
