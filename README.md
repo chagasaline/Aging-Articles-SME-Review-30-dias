@@ -22,7 +22,7 @@ por e-mail em toda a planilha.
 
 Como o envio é autenticado (usuário + senha), você precisa de **uma** destas duas opções:
 
-**Opção A — usar a própria caixa `IT.Knowledge.Management@vale.com`**
+**Opção A — usar a própria caixa `Iemail da pessoa`**
 - A caixa precisa ter uma senha própria (se for uma caixa compartilhada, o TI
   precisa habilitar login direto nela, ou criar uma senha).
 - SMTP AUTH precisa estar habilitado para essa caixa no Exchange Admin Center
