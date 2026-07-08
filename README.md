@@ -2,7 +2,7 @@
 
 Sistema web que substitui a macro VBA `MandaEmail` da planilha "Cobrança + 30".
 Faz upload da planilha, agrupa os artigos por dono e **envia os e-mails direto por
-SMTP autenticado**, sem precisar abrir o Outlook.
+SMTP autenticado, sem precisar abrir o Outlook.
 
 ## O que ele reproduz da macro original
 
@@ -10,8 +10,8 @@ SMTP autenticado**, sem precisar abrir o Outlook.
 - Mesmo texto PT + tabela + EN
 - Mesma tabela HTML (DocId / Type / Article Title / Article Owner Name), com as
   mesmas cores
-- Mesmo Cc fixo: `roger.goegan@vale.com; maxsuel.sena@vale.com; cristhian.veiga@vale.com; nycolas.reis@vale.com; IT.Knowledge.Management@vale.com`
-- Remetente: `IT.Knowledge.Management@vale.com`
+- Mesmo Cc fixo: ` emails das pessoas separados por vírgulas`
+- Remetente: ` email do remetente`
 
 **Melhoria em relação à macro:** o agrupamento por dono não depende mais das
 linhas estarem "coladas" na planilha (a macro original quebrava o agrupamento se
