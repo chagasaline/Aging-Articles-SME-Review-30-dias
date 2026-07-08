@@ -35,7 +35,7 @@ Como o envio é autenticado (usuário + senha), você precisa de **uma** destas 
 **Opção B — usar sua própria conta autenticada, enviando "como" a caixa**
 - Sua conta faz login no SMTP normalmente.
 - O TI concede a você a permissão **"Send As"** (ou "Send on Behalf") na caixa
-  `IT.Knowledge.Management@vale.com` (via Exchange Admin Center ou PowerShell:
+  `email` (via Exchange Admin Center ou PowerShell:
   `Add-RecipientPermission`).
 - Sem essa permissão, o servidor rejeita o e-mail ou troca o remetente
   automaticamente.
