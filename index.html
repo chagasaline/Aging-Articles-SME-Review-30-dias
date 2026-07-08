@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KB Mailer – Aging Articles</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: #f4f7fb;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+        .header-bar {
+            background: #007e7a;
+            border-radius: 16px 16px 0 0;
+            margin: -40px -40px 20px -40px;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .header-bar h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            border: none;
+            padding: 0;
+        }
+        .header-bar h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #e0f2f1;
+        }
+        .user-info-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+        .user-info-top .name {
+            font-weight: 500;
+        }
+        /* --- Caixa de login centralizada --- */
+        .login-central {
+            max-width: 400px;
+            margin: 30px auto 10px;
+            padding: 30px 35px;
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            text-align: center;
+        }
+        .login-central .icon-avatar {
+            width: 72px;
+            height: 72px;
+            background: #007e7a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 36px;
+            color: white;
+        }
+        .login-central h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 6px;
+        }
+        .login-central p {
+            color: #4a5568;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        .login-central .form-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+        .login-central .form-group label {
+            display: block;
+            font-weight: 500;
+            color: #2d3748;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+        .login-central .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: 0.15s;
+            background: #f7fafc;
+        }
+        .login-central .form-group input:focus {
+            border-color: #007e7a;
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0,126,122,0.15);
+        }
+        .login-central .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: #007e7a;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.15s;
+            margin-top: 8px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .login-central .btn-login:hover {
+            background: #00635e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,126,122,0.3);
+        }
+        .login-central .btn-login svg {
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        .login-central .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0 16px;
+        }
+        .login-central .divider::before,
+        .login-central .divider::after {
+            content: "";
+            flex: 1;
+            border-top: 1px solid #e2e8f0;
+        }
+        .login-central .divider span {
+            padding: 0 12px;
+            color: #718096;
+            font-size: 13px;
+        }
+        .login-central .hint {
+            font-size: 13px;
+            color: #718096;
+            margin-top: 8px;
+        }
+        /* --- Elementos de envio (aparecem após login) --- */
+        .subtitle {
+            color: #4a5568;
+            margin: 0 0 20px 0;
+            font-size: 15px;
+            background: #f7fafc;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border-left: 4px solid #007e7a;
+        }
+        .config-box {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border: 1px solid #e2e8f0;
+            font-size: 14px;
+            color: #2d3748;
+        }
+        .config-box strong {
+            color: #1a202c;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .card h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .file-upload-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .file-upload-area input[type="file"] {
+            flex: 1;
+            padding: 10px 16px;
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            background: #f7fafc;
+            font-size: 14px;
+            color: #1a202c;
+            min-width: 200px;
+        }
+        .file-upload-area input[type="file"]:hover {
+            border-color: #007e7a;
+            background: #f0f7f6;
+        }
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background: #007e7a;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #00635e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,126,122,0.3);
+        }
+        .btn-success {
+            background: #22c55e;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #cbd5e0;
+            color: #1a202c;
+        }
+        .btn-outline:hover {
+            background: #edf2f7;
+        }
+        .btn-danger {
+            background: #e53e3e;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #c53030;
+        }
+        .status-msg {
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-top: 16px;
+            font-weight: 500;
+            display: none;
+        }
+        .status-msg.success {
+            display: block;
+            background: #c6f6d5;
+            color: #22543d;
+            border-left: 6px solid #22c55e;
+        }
+        .status-msg.error {
+            display: block;
+            background: #fed7d7;
+            color: #9b2c2c;
+            border-left: 6px solid #e53e3e;
+        }
+        .preview-table-wrap {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-top: 12px;
+        }
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .preview-table th {
+            background: #edf2f7;
+            color: #1a202c;
+            font-weight: 600;
+            padding: 12px 16px;
+            text-align: left;
+        }
+        .preview-table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid #edf2f7;
+        }
+        .preview-table tr:hover td {
+            background: #f7fafc;
+        }
+        .checkbox-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 24px;
+            margin: 16px 0 12px 0;
+            padding: 12px 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .checkbox-grid label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            color: #1a202c;
+            cursor: pointer;
+        }
+        .checkbox-grid input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #007e7a;
+        }
+        .options-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px 32px;
+            margin: 16px 0 20px 0;
+            padding: 16px 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .options-row label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            color: #1a202c;
+        }
+        .options-row input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #007e7a;
+        }
+        .options-row input[type="email"] {
+            border: 2px solid #cbd5e0;
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-size: 14px;
+            width: 220px;
+            background: white;
+        }
+        .options-row input[type="email"]:focus {
+            border-color: #007e7a;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0,126,122,0.15);
+        }
+        .results-table {
+            margin-top: 24px;
+        }
+        .badge-success {
+            color: #22c55e;
+            font-weight: 600;
+        }
+        .badge-error {
+            color: #e53e3e;
+            font-weight: 600;
+        }
+        .footer {
+            margin-top: 36px;
+            text-align: center;
+            color: #718096;
+            font-size: 14px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+        }
+        .footer a {
+            color: #007e7a;
+            text-decoration: none;
+        }
+        @media (max-width: 700px) {
+            .container { padding: 20px; }
+            .header-bar { flex-direction: column; align-items: stretch; }
+            .login-central { margin: 20px auto; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Barra verde com título e, se logado, informações do usuário -->
+    <div class="header-bar">
+        <h1>📬 KB Mailer <small>Aging Articles (SME Review > 30 dias)</small></h1>
+        {% if user_info %}
+            <div class="user-info-top">
+                <span class="name">{{ user_info.name }}</span>
+                <a href="/logout" class="btn btn-danger" style="padding:6px 16px; font-size:13px;">Sair</a>
+            </div>
+        {% else %}
+            <div style="width:0; height:0; visibility:hidden;"></div> <!-- placeholder para alinhar -->
+        {% endif %}
+    </div>
+
+    {% if user_info %}
+        <!-- -------------------- USUÁRIO LOGADO: interface de envio -------------------- -->
+        <div class="subtitle">
+            Envia direto por SMTP, sem abrir o Outlook. Substitui a macro da planilha "Cobrança + 30".
+        </div>
+
+        <div class="config-box">
+            <strong>⚙️ Configuração atual</strong><br>
+            <span>Remetente (From): <strong>{{ mail_from }}</strong></span><br>
+            <span>Assunto: <strong>{{ subject }}</strong></span><br>
+            <span>Cc fixo: <strong>{{ cc_list }}</strong></span>
+        </div>
+
+        <div class="card">
+            <h2>📤 1. Enviar planilha (.xlsx / .xlsm)</h2>
+            <div class="file-upload-area">
+                <input type="file" id="fileInput" accept=".xlsx,.xlsm">
+                <button class="btn btn-primary" id="uploadBtn">📂 Carregar e agrupar</button>
+            </div>
+            <div style="font-size: 13px; color: #718096; margin-top: 8px;">
+                Colunas esperadas: Doc ID | Type | Article Title | Article Owner Name | Owner E mail
+            </div>
+            <div id="statusMsg" class="status-msg"></div>
+        </div>
+
+        <div id="previewArea" style="display:none;">
+            <div class="card">
+                <h2>👥 Destinatários encontrados</h2>
+                <div id="recipientList"></div>
+                <div class="checkbox-grid">
+                    <label><input type="checkbox" id="selectAll" checked> Selecionar todos</label>
+                </div>
+
+                <div class="options-row">
+                    <label><input type="checkbox" id="dryRun" checked> 🧪 Modo simulação (dry-run)</label>
+                    <label><input type="checkbox" id="sendAsShared" {% if allow_send_as %}checked{% else %}disabled{% endif %}> 📤 Enviar como caixa compartilhada ({{ mail_from }})</label>
+                    <label>📧 E-mail de teste:
+                        <input type="email" id="testEmail" placeholder="deixe em branco para enviar aos donos">
+                    </label>
+                </div>
+
+                <button class="btn btn-success" id="sendBtn">📨 Enviar e-mails</button>
+                <div id="sendResults" class="results-table"></div>
+            </div>
+        </div>
+
+    {% else %}
+        <!-- -------------------- USUÁRIO NÃO LOGADO: apenas caixa de login centralizada -------------------- -->
+        <div class="login-central">
+            <div class="icon-avatar">🔐</div>
+            <h2>Bem-vindo</h2>
+            <p>Faça login com sua conta Microsoft para enviar os avisos.</p>
+
+            <div class="form-group">
+                <label for="loginEmail">E-mail</label>
+                <input type="email" id="loginEmail" placeholder="seu.email@vale.com" value="seu.email@vale.com">
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Senha</label>
+                <input type="password" id="loginPassword" placeholder="••••••••">
+            </div>
+
+            <a href="/login" class="btn-login">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                    <path fill="#f3f3f3" d="M0 0h23v23H0z"/>
+                    <path fill="#f35325" d="M1 1h10v10H1z"/>
+                    <path fill="#81bc06" d="M12 1h10v10H12z"/>
+                    <path fill="#05a6f0" d="M1 12h10v10H1z"/>
+                    <path fill="#ffba08" d="M12 12h10v10H12z"/>
+                </svg>
+                Entrar com Microsoft
+            </a>
+            <div class="divider"><span>ou</span></div>
+            <p class="hint">Os campos de e-mail e senha são ilustrativos; o login é feito via autenticação Microsoft segura.</p>
+        </div>
+    {% endif %}
+
+    <div class="footer">
+        🔒 Autenticação Microsoft (OAuth2) – Nenhuma senha armazenada • Desenvolvido para a Vale
+    </div>
+</div>
+
+<script>
+    (function() {
+        // Só executa o restante se o usuário estiver logado (elementos existem)
+        const fileInput = document.getElementById('fileInput');
+        if (!fileInput) return;
+
+        let batchId = null;
+        let groups = [];
+
+        const uploadBtn = document.getElementById('uploadBtn');
+        const previewArea = document.getElementById('previewArea');
+        const recipientList = document.getElementById('recipientList');
+        const selectAllCheck = document.getElementById('selectAll');
+        const dryRunCheck = document.getElementById('dryRun');
+        const sendAsSharedCheck = document.getElementById('sendAsShared');
+        const testEmailInput = document.getElementById('testEmail');
+        const sendBtn = document.getElementById('sendBtn');
+        const statusMsg = document.getElementById('statusMsg');
+        const sendResults = document.getElementById('sendResults');
+
+        function showStatus(msg, type) {
+            statusMsg.textContent = msg;
+            statusMsg.className = 'status-msg ' + type;
+        }
+
+        uploadBtn.addEventListener('click', function() {
+            const file = fileInput.files[0];
+            if (!file) {
+                showStatus('Selecione um arquivo.', 'error');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('file', file);
+            fetch('/upload', { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        showStatus('Erro: ' + data.error, 'error');
+                        return;
+                    }
+                    batchId = data.batch_id;
+                    groups = data.groups;
+                    renderPreview(groups);
+                    previewArea.style.display = 'block';
+                    showStatus('✅ Planilha processada: ' + groups.length + ' destinatários encontrados.', 'success');
+                })
+                .catch(err => {
+                    showStatus('Erro ao enviar: ' + err, 'error');
+                });
+        });
+
+        function renderPreview(groups) {
+            let html = '<div class="preview-table-wrap"><table class="preview-table"><thead><tr><th>Selecionar</th><th>E-mail</th><th>Dono</th><th>Artigos</th></tr></thead><tbody>';
+            groups.forEach((g) => {
+                html += `<tr>
+                    <td><input type="checkbox" class="recipient-check" data-email="${g.email}" checked></td>
+                    <td>${g.email}</td>
+                    <td>${g.owner_name}</td>
+                    <td>${g.article_count}</td>
+                </tr>`;
+            });
+            html += '</tbody></table></div>';
+            recipientList.innerHTML = html;
+
+            selectAllCheck.addEventListener('change', function() {
+                document.querySelectorAll('.recipient-check').forEach(cb => cb.checked = this.checked);
+            });
+            document.addEventListener('change', function(e) {
+                if (e.target.classList.contains('recipient-check')) {
+                    const all = document.querySelectorAll('.recipient-check');
+                    const checked = document.querySelectorAll('.recipient-check:checked');
+                    selectAllCheck.checked = all.length === checked.length;
+                }
+            });
+        }
+
+        sendBtn.addEventListener('click', function() {
+            const selected = [];
+            document.querySelectorAll('.recipient-check:checked').forEach(cb => {
+                selected.push(cb.dataset.email);
+            });
+            if (selected.length === 0) {
+                showStatus('Selecione pelo menos um destinatário.', 'error');
+                return;
+            }
+            const payload = {
+                batch_id: batchId,
+                emails: selected,
+                dry_run: dryRunCheck.checked,
+                test_email: testEmailInput.value,
+                send_as_shared: sendAsSharedCheck.checked
+            };
+            sendBtn.disabled = true;
+            sendBtn.textContent = '⏳ Enviando...';
+            fetch('/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    showStatus('Erro: ' + data.error, 'error');
+                    return;
+                }
+                let resultHtml = '<h3 style="margin-top:16px;">📊 Resultados do envio</h3><div class="preview-table-wrap"><table class="preview-table"><thead><tr><th>Destinatário</th><th>Enviado para</th><th>Status</th><th>Info</th></tr></thead><tbody>';
+                data.results.forEach(r => {
+                    const statusClass = r.success ? 'badge-success' : 'badge-error';
+                    resultHtml += `<tr><td>${r.email}</td><td>${r.sent_to}</td><td class="${statusClass}">${r.success ? '✅' : '❌'}</td><td>${r.info}</td></tr>`;
+                });
+                resultHtml += '</tbody></table></div>';
+                sendResults.innerHTML = resultHtml;
+                showStatus('✅ Envio concluído.', 'success');
+            })
+            .catch(err => {
+                showStatus('Erro: ' + err, 'error');
+            })
+            .finally(() => {
+                sendBtn.disabled = false;
+                sendBtn.textContent = '📨 Enviar e-mails';
+            });
+        });
+    })();
+</script>
+</body>
+</html>
