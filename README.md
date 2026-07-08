@@ -91,5 +91,5 @@ deploy no Azure App Service, etc.) — é só pedir.
 
 - O `.env` contém a senha do e-mail: nunca o coloque em um repositório Git
   público nem o compartilhe.
-- Considere restringir o acesso a este sistema (rede interna / VPN da Vale,
+- Considere restringir o acesso a este sistema (rede interna / VPN ,
   login).
